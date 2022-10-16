@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  deepracer-result
+
+  Sample SAM Template for deepracer-result
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 30
+
+Resources:
+  # Create SNS topic and subscription
+  SnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: email
+      Subscription:
+        - Protocol: email
+          # Replace your email
+          Endpoint: email@example.com
+
+  SeleniumFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: Selenium with AWS SNS
+      # replace your account id and region 
+      ImageUri: 111122223333.dkr.ecr.us-east-1.amazonaws.com/app:latest
+      PackageType: Image
+      CodeUri: app/   
+      MemorySize: 1024
+      Environment:
+        Variables:
+          SNStopic: !Ref SnsTopic
+      Architectures:
+        - x86_64
+      Policies:
+      ## Read more about SAM Policy templates at:
+      ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt SnsTopic.TopicName
+      Events:
+        Trigger:
+          Type: Schedule
+          Properties:
+            Schedule: 'rate(1 day)'
+    Metadata:
+      DockerTag: latest
+      DockerContext: ./app
+      Dockerfile: Dockerfile
+
