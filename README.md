@@ -23,10 +23,10 @@
 6. Confirm subscription on your mailbox
 
 ### Example Source
-![source](/assets/images/website_info.jpg)
+![source](/assets/images/website_info.JPG)
 
 ### Example output
-![output](/assets/images/output.jpg)
+![output](/assets/images/output.JPG)
 
 ### Doc:
 - https://www.selenium.dev/documentation/
