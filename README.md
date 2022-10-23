@@ -10,7 +10,7 @@
 - Docker
 
 ### Architecture
-!(/images/architecture.jpg)
+![Architecture](/assets/images/architecture.jpg)
 
 ### How to use: 
 1. aws configure
@@ -22,11 +22,11 @@
 - then choose your prefer configure
 6. Confirm subscription on your mailbox
 
-### Example Sourcs
-!(/images/website_info.jpg)
+### Example Source
+![source](/assets/images/website_info.jpg)
 
 ### Example output
-!(/images/output.jpg)
+![output](/assets/images/output.jpg)
 
 ### Doc:
 - https://www.selenium.dev/documentation/
