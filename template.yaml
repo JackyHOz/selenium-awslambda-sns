@@ -1,9 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  deepracer-result
-
-  Sample SAM Template for deepracer-result
+  Sample SAM Template
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -12,19 +10,19 @@ Globals:
 
 Resources:
   # Create SNS topic and subscription
-  SnsTopic:
+  SnsTopic1:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: email
+      TopicName: email1
       Subscription:
         - Protocol: email
           # Replace your email
-          Endpoint: email@example.com
+          Endpoint: your@email.com
 
   SeleniumFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      FunctionName: Selenium with AWS SNS
+      FunctionName: SeleniumwithAWSSNS
       # replace your account id and region 
       ImageUri: 111122223333.dkr.ecr.us-east-1.amazonaws.com/app:latest
       PackageType: Image
@@ -32,18 +30,20 @@ Resources:
       MemorySize: 1024
       Environment:
         Variables:
-          SNStopic: !Ref SnsTopic
+          SNStopic: !Ref SnsTopic1
       Architectures:
         - x86_64
       Policies:
       ## Read more about SAM Policy templates at:
       ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
         - SNSPublishMessagePolicy:
-            TopicName: !GetAtt SnsTopic.TopicName
+            TopicName: !GetAtt SnsTopic1.TopicName
       Events:
         Trigger:
           Type: Schedule
           Properties:
+            # set your prefer time to trigger
+            # Schedule: 'cron(0 2 * * ? *)'
             Schedule: 'rate(1 day)'
     Metadata:
       DockerTag: latest
